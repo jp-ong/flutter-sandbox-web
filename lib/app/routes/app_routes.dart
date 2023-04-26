@@ -6,6 +6,7 @@ abstract class Routes {
   static const HOME = _Paths.HOME;
   static const EXPORT_PDF = _Paths.EXPORT_PDF;
   static const EXPORT_CSV = _Paths.EXPORT_CSV;
+  static const EXPORT_TABLE = _Paths.EXPORT_TABLE;
 }
 
 abstract class _Paths {
@@ -13,4 +14,5 @@ abstract class _Paths {
   static const HOME = '/home';
   static const EXPORT_PDF = '/export-pdf';
   static const EXPORT_CSV = '/export-csv';
+  static const EXPORT_TABLE = '/export-table';
 }

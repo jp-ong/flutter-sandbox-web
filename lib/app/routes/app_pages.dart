@@ -4,6 +4,8 @@ import '../modules/export_csv/bindings/export_csv_binding.dart';
 import '../modules/export_csv/views/export_csv_view.dart';
 import '../modules/export_pdf/bindings/export_pdf_binding.dart';
 import '../modules/export_pdf/views/export_pdf_view.dart';
+import '../modules/export_table/bindings/export_table_binding.dart';
+import '../modules/export_table/views/export_table_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 
@@ -29,6 +31,11 @@ class AppPages {
       name: _Paths.EXPORT_CSV,
       page: () => const ExportCsvView(),
       binding: ExportCsvBinding(),
+    ),
+    GetPage(
+      name: _Paths.EXPORT_TABLE,
+      page: () => const ExportTableView(),
+      binding: ExportTableBinding(),
     ),
   ];
 }

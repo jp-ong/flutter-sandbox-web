@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'app/routes/app_pages.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   const Color primaryColor = Color.fromARGB(255, 55, 130, 100);
 
   ThemeData darkThemeData = ThemeData(
@@ -31,32 +33,44 @@ void main() {
         color: primaryColor,
       ),
     ),
-    textTheme: const TextTheme(
-      labelLarge: TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w700,
+    textTheme: TextTheme(
+      labelLarge: GoogleFonts.roboto(
+        textStyle: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w700,
+        ),
       ),
-      labelMedium: TextStyle(
-        fontSize: 12,
-        color: primaryColor,
-        fontWeight: FontWeight.w700,
+      labelMedium: GoogleFonts.roboto(
+        textStyle: const TextStyle(
+          fontSize: 14,
+          color: primaryColor,
+          fontWeight: FontWeight.w700,
+        ),
       ),
-      bodyMedium: TextStyle(
-        fontSize: 16,
-        color: Colors.black,
+      bodyMedium: GoogleFonts.roboto(
+        textStyle: const TextStyle(
+          fontSize: 16,
+          color: Colors.black,
+        ),
       ),
-      headlineLarge: TextStyle(
-        fontSize: 24,
-        color: primaryColor,
-        fontWeight: FontWeight.w700,
+      headlineLarge: GoogleFonts.roboto(
+        textStyle: const TextStyle(
+          fontSize: 24,
+          color: primaryColor,
+          fontWeight: FontWeight.w700,
+        ),
       ),
-      displayMedium: TextStyle(
-        fontSize: 14,
-        color: Colors.black87,
+      displayMedium: GoogleFonts.roboto(
+        textStyle: const TextStyle(
+          fontSize: 14,
+          color: Colors.black87,
+        ),
       ),
-      displaySmall: TextStyle(
-        fontSize: 12,
-        color: Colors.black87,
+      displaySmall: GoogleFonts.roboto(
+        textStyle: const TextStyle(
+          fontSize: 12,
+          color: Colors.black87,
+        ),
       ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(

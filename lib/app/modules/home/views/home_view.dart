@@ -18,6 +18,7 @@ class HomeView extends GetView<HomeController> {
   static List<FeatureButton> featureButtons = [
     FeatureButton(label: 'PDF', route: Routes.EXPORT_PDF),
     FeatureButton(label: 'CSV', route: Routes.EXPORT_CSV),
+    FeatureButton(label: 'Tabulated Data', route: Routes.EXPORT_TABLE),
   ];
 
   @override

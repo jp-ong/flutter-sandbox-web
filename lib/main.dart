@@ -5,24 +5,25 @@ import 'package:get/get.dart';
 import 'app/routes/app_pages.dart';
 
 void main() {
-  const Color primaryColor = Color.fromARGB(255, 75, 180, 150);
+  const Color primaryColor = Color.fromARGB(255, 55, 130, 100);
 
-  ThemeData lightThemeData = ThemeData(
+  ThemeData darkThemeData = ThemeData(
     colorScheme: const ColorScheme(
-      brightness: Brightness.light,
+      brightness: Brightness.dark,
       primary: primaryColor,
       onPrimary: Colors.white,
       secondary: Color.fromARGB(255, 255, 100, 100),
       onSecondary: Colors.white,
       error: Color.fromARGB(255, 255, 0, 0),
       onError: Colors.white,
-      background: Color.fromARGB(255, 250, 250, 250),
-      onBackground: Colors.black,
-      surface: Colors.grey,
-      onSurface: Colors.black,
+      background: Color.fromARGB(255, 40, 40, 40),
+      onBackground: Colors.white,
+      surface: Color.fromARGB(255, 40, 40, 40),
+      onSurface: Colors.white,
     ),
+    scaffoldBackgroundColor: const Color.fromARGB(255, 40, 40, 40),
     appBarTheme: const AppBarTheme(
-      backgroundColor: Color.fromARGB(255, 250, 250, 250),
+      backgroundColor: Color.fromARGB(255, 40, 40, 40),
       foregroundColor: primaryColor,
       elevation: 0,
       titleTextStyle: TextStyle(
@@ -36,7 +37,7 @@ void main() {
         fontWeight: FontWeight.w700,
       ),
       labelMedium: TextStyle(
-        fontSize: 14,
+        fontSize: 12,
         color: primaryColor,
         fontWeight: FontWeight.w700,
       ),
@@ -100,7 +101,9 @@ void main() {
       title: "Application",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
-      theme: lightThemeData,
+      theme: darkThemeData,
+      darkTheme: darkThemeData,
+      themeMode: ThemeMode.dark,
     ),
   );
 }

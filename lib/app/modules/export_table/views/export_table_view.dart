@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_sandbox_web/app/utils/export_table_pdf.dart';
 
 import 'package:get/get.dart';
 
@@ -15,13 +16,18 @@ class ExportTableView extends GetView<ExportTableController> {
       ),
       body: Center(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              child: Text('Export as PDF'),
-              onPressed: () {},
+              child: const Text('Export as PDF'),
+              onPressed: () {
+                exportTablePDF();
+              },
             ),
+            const SizedBox(height: 16),
             ElevatedButton(
-              child: Text('Export as CSV'),
+              child: const Text('Export as CSV'),
               onPressed: () {},
             ),
           ],

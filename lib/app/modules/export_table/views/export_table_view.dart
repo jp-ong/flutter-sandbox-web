@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_sandbox_web/app/utils/export_table_csv.dart';
 import 'package:flutter_sandbox_web/app/utils/export_table_pdf.dart';
 
 import 'package:get/get.dart';
@@ -28,7 +29,9 @@ class ExportTableView extends GetView<ExportTableController> {
             const SizedBox(height: 16),
             ElevatedButton(
               child: const Text('Export as CSV'),
-              onPressed: () {},
+              onPressed: () {
+                exportTableCSV();
+              },
             ),
           ],
         ),

@@ -6,21 +6,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_sandbox_web/app/utils/credential_model.dart';
+import 'package:flutter_sandbox_web/app/modules/export_data/models/credential_model.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-
-pw.TextStyle smallNormal = pw.TextStyle(
-  color: PdfColors.grey800,
-  fontSize: 8,
-  fontWeight: pw.FontWeight.normal,
-);
-
-pw.TextStyle smallBold = pw.TextStyle(
-  color: PdfColors.grey800,
-  fontSize: 8,
-  fontWeight: pw.FontWeight.bold,
-);
+import './pdf_textstyle.dart';
 
 Future<List<Credential>> getVerifiableCredentials() async {
   final dio = Dio();
@@ -50,7 +39,7 @@ pw.TableRow tableHeader(List<String> headers) {
     ...headers.map((h) {
       return pw.Container(
         padding: const pw.EdgeInsets.all(3),
-        child: pw.Text(h, style: smallBold),
+        child: pw.Text(h, style: PdfTextStyle.smallBold),
       );
     }),
   ]);
@@ -63,7 +52,7 @@ pw.TableRow tableRow(List<String> items, PdfColor color) {
         return pw.Container(
           padding: const pw.EdgeInsets.all(3),
           color: color,
-          child: pw.Text(i, style: smallNormal),
+          child: pw.Text(i, style: PdfTextStyle.smallNormal),
         );
       })
     ],
@@ -141,11 +130,12 @@ Future<pw.Document> buildPDF(pw.Document pdf) async {
               text: pw.TextSpan(
                 children: [
                   const pw.TextSpan(text: 'Page '),
-                  pw.TextSpan(text: pageLabel, style: smallBold),
+                  pw.TextSpan(text: pageLabel, style: PdfTextStyle.smallBold),
                   const pw.TextSpan(text: ' of '),
-                  pw.TextSpan(text: '$pagesCount', style: smallBold),
+                  pw.TextSpan(
+                      text: '$pagesCount', style: PdfTextStyle.smallBold),
                 ],
-                style: smallNormal,
+                style: PdfTextStyle.smallNormal,
               ),
             )
           ],

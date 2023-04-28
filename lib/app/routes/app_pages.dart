@@ -1,11 +1,9 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:get/get.dart';
 
-import '../modules/export_csv/bindings/export_csv_binding.dart';
-import '../modules/export_csv/views/export_csv_view.dart';
-import '../modules/export_pdf/bindings/export_pdf_binding.dart';
-import '../modules/export_pdf/views/export_pdf_view.dart';
-import '../modules/export_table/bindings/export_table_binding.dart';
-import '../modules/export_table/views/export_table_view.dart';
+import '../modules/export_data/bindings/export_data_binding.dart';
+import '../modules/export_data/views/export_data_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 
@@ -23,19 +21,9 @@ class AppPages {
       binding: HomeBinding(),
     ),
     GetPage(
-      name: _Paths.EXPORT_PDF,
-      page: () => const ExportPdfView(),
-      binding: ExportPdfBinding(),
-    ),
-    GetPage(
-      name: _Paths.EXPORT_CSV,
-      page: () => const ExportCsvView(),
-      binding: ExportCsvBinding(),
-    ),
-    GetPage(
-      name: _Paths.EXPORT_TABLE,
-      page: () => const ExportTableView(),
-      binding: ExportTableBinding(),
+      name: _Paths.EXPORT_DATA,
+      page: () => const ExportDataView(),
+      binding: ExportDataBinding(),
     ),
   ];
 }

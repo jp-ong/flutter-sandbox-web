@@ -24,7 +24,9 @@ class ExportDataView extends GetView<ExportDataController> {
             const SizedBox(height: 8),
             ElevatedButton(
               child: const Text('Export as CSV'),
-              onPressed: () {},
+              onPressed: () {
+                // exportTableCSV();
+              },
             ),
           ],
         ),

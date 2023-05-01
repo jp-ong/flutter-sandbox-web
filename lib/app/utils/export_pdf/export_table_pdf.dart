@@ -11,6 +11,23 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import './pdf_textstyle.dart';
 
+String getStatus(String status) {
+  switch (status) {
+    case 'VERIFIED':
+      return 'Fully Verified';
+    case 'NEEDS_ACTION':
+      return 'Needs Action';
+    case 'REVOKED':
+      return 'Revoked';
+    case 'REJECTED':
+      return 'Rejected';
+    case 'EXPIRED':
+      return 'Expired';
+    default:
+      return status;
+  }
+}
+
 Future<List<Credential>> getVerifiableCredentials() async {
   final dio = Dio();
   var apiUrl = dotenv.get('BASE_URL_VC');
@@ -60,8 +77,9 @@ pw.TableRow tableRow(List<String> items, PdfColor color) {
 }
 
 List<pw.TableRow> tableBody(List<Credential> credentials) {
-  for (var i = 0; i < 300; i++) {
-    credentials.add(credentials[0]);
+  int length = credentials.length;
+  for (var i = 0; i < 100; i++) {
+    credentials.add(credentials[i % length]);
   }
   return [
     ...credentials.asMap().entries.map((entry) {
@@ -72,7 +90,7 @@ List<pw.TableRow> tableBody(List<Credential> credentials) {
         c.birthdate.toString().split(' ')[0],
         c.created.toString().split(' ')[0],
         c.channelIssuerId,
-        c.status
+        getStatus(c.status),
       ], entry.key % 2 == 0 ? PdfColors.grey100 : PdfColors.white);
     })
   ];

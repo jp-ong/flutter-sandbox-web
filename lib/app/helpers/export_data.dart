@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_sandbox_web/app/utils/export_pdf/export_pdf.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:csv/csv.dart';
 
 enum FileExtension {
   pdf,

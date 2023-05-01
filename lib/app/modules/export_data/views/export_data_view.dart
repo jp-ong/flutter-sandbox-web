@@ -19,7 +19,9 @@ class ExportDataView extends GetView<ExportDataController> {
           children: [
             ElevatedButton(
               child: const Text('Export as PDF'),
-              onPressed: () {},
+              onPressed: () {
+                controller.exportAsPDF();
+              },
             ),
             const SizedBox(height: 8),
             ElevatedButton(

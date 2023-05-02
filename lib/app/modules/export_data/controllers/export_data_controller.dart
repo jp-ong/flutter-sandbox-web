@@ -51,11 +51,47 @@ class ExportDataController extends GetxController {
 
   void exportListAsPDF() async {
     await fetchCredentials();
-    print(credentials);
+    ExportData.tableAsPDF(headers: [
+      'RefID',
+      'Name',
+      'Birthdate',
+      'Date',
+      'Channel',
+      'Status'
+    ], rows: [
+      ...credentials.map((credential) {
+        return [
+          credential.requestId.substring(0, 7),
+          credential.fullName,
+          credential.birthdate.toIso8601String().split('T')[0],
+          credential.created.toIso8601String().split('T')[0],
+          credential.channelIssuerId,
+          credential.status
+        ];
+      })
+    ]);
   }
 
   void exportListAsCSV() async {
     await fetchCredentials();
-    print(credentials);
+    ExportData.tableAsCSV(headers: [
+      'RefID',
+      'Name',
+      'Birthdate',
+      'Date',
+      'Channel',
+      'Status'
+    ], rows: [
+      ...credentials.map((credential) {
+        return [
+          credential.requestId,
+          credential.fullName,
+          credential.birthdate.toIso8601String(),
+          credential.created.toIso8601String(),
+          credential.channelIssuerId,
+          credential.status
+        ];
+      })
+    ]);
   }
 }

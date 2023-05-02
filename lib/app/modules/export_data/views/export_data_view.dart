@@ -21,6 +21,7 @@ class ExportDataView extends GetView<ExportDataController> {
               'Credentials List',
               style: TextStyle(
                 color: Colors.white,
+                fontSize: 14,
               ),
             ),
             const SizedBox(height: 8),
@@ -42,6 +43,7 @@ class ExportDataView extends GetView<ExportDataController> {
               'Credential Details',
               style: TextStyle(
                 color: Colors.white,
+                fontSize: 14,
               ),
             ),
             const SizedBox(height: 8),

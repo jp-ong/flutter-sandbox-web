@@ -1,9 +1,11 @@
 import 'dart:html' as html;
+import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_sandbox_web/app/utils/export_pdf/export_pdf.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:csv/csv.dart';
 
 enum FileExtension {
   pdf,
@@ -16,6 +18,23 @@ enum ContentType {
 
   final String type;
   const ContentType(this.type);
+}
+
+String getStatus(String status) {
+  switch (status) {
+    case 'VERIFIED':
+      return 'Fully Verified';
+    case 'NEEDS_ACTION':
+      return 'Needs Action';
+    case 'REVOKED':
+      return 'Revoked';
+    case 'REJECTED':
+      return 'Rejected';
+    case 'EXPIRED':
+      return 'Expired';
+    default:
+      return status;
+  }
 }
 
 class PdfHeader {
@@ -155,8 +174,94 @@ class ExportData {
     );
   }
 
+  static void tableAsPDF({
+    required List<String> headers,
+    required List<List<String>> rows,
+  }) async {
+    final pdf = pw.Document();
+
+    pdf.addPage(
+      pw.MultiPage(
+        pageFormat: PdfPageFormat.letter,
+        mainAxisAlignment: pw.MainAxisAlignment.start,
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        build: (context) {
+          return [
+            pw.Container(
+              decoration: pw.BoxDecoration(
+                border: pw.Border.all(
+                  color: PdfColors.grey300,
+                  width: 0.75,
+                ),
+              ),
+              child: pw.Table(
+                border: const pw.TableBorder(
+                  horizontalInside: pw.BorderSide(
+                    color: PdfColors.grey300,
+                    width: 0.5,
+                  ),
+                  verticalInside: pw.BorderSide(
+                    color: PdfColors.grey300,
+                    width: 0.5,
+                  ),
+                ),
+                children: [
+                  pw.TableRow(children: [
+                    ...headers.map((header) {
+                      return pw.Container(
+                        padding: const pw.EdgeInsets.all(3),
+                        child: pw.Text(
+                          header,
+                          style: PdfTextStyle.tableHeader,
+                        ),
+                      );
+                    })
+                  ]),
+                  ...rows.map((row) {
+                    return pw.TableRow(children: [
+                      ...row.map((r) {
+                        return pw.Container(
+                          padding: const pw.EdgeInsets.all(3),
+                          child: pw.Text(
+                            getStatus(r),
+                            style: PdfTextStyle.tableData,
+                          ),
+                        );
+                      })
+                    ]);
+                  }),
+                ],
+              ),
+            ),
+          ];
+        },
+      ),
+    );
+
+    _saveFile(
+      contentType: ContentType.pdf,
+      data: await pdf.save(),
+      fileExtension: FileExtension.pdf,
+      fileName: 'table_${DateTime.now().toIso8601String()}',
+    );
+  }
+
+  static void tableAsCSV({
+    required List<String> headers,
+    required List<List<String>> rows,
+  }) {
+    String csvData = const ListToCsvConverter().convert([headers, ...rows]);
+
+    _saveFile(
+      contentType: ContentType.csv,
+      data: csvData,
+      fileExtension: FileExtension.csv,
+      fileName: 'table_${DateTime.now().toIso8601String()}',
+    );
+  }
+
   static void _saveFile({
-    required Uint8List data,
+    required dynamic data,
     required String fileName,
     required FileExtension fileExtension,
     required ContentType contentType,
@@ -190,12 +295,30 @@ class PdfTextStyle {
   static final labelSmall = pw.TextStyle(
     color: PdfColors.grey500,
     fontSize: 10,
-    fontWeight: pw.FontWeight.normal,
+    fontWeight: pw.FontWeight.bold,
   );
 
   static final bodyMedium = pw.TextStyle(
     color: PdfColors.grey800,
     fontSize: 12,
+    fontWeight: pw.FontWeight.normal,
+  );
+
+  static final bodySmall = pw.TextStyle(
+    color: PdfColors.grey800,
+    fontSize: 10,
+    fontWeight: pw.FontWeight.normal,
+  );
+
+  static final tableHeader = pw.TextStyle(
+    color: PdfColors.grey700,
+    fontSize: 8,
+    fontWeight: pw.FontWeight.bold,
+  );
+
+  static final tableData = pw.TextStyle(
+    color: PdfColors.grey900,
+    fontSize: 8,
     fontWeight: pw.FontWeight.normal,
   );
 }

@@ -17,17 +17,38 @@ class ExportDataView extends GetView<ExportDataController> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const Text(
+              'Credentials List',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 8),
             ElevatedButton(
               child: const Text('Export as PDF'),
               onPressed: () {
-                controller.exportAsPDF();
+                controller.exportListAsPDF();
               },
             ),
             const SizedBox(height: 8),
             ElevatedButton(
               child: const Text('Export as CSV'),
               onPressed: () {
-                // exportTableCSV();
+                controller.exportListAsCSV();
+              },
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Credential Details',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 8),
+            ElevatedButton(
+              child: const Text('Export as PDF'),
+              onPressed: () {
+                controller.exportDetailsAsPDF();
               },
             ),
           ],

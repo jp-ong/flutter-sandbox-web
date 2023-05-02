@@ -11,6 +11,25 @@ String credentialToJson(List<Credential> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Credential {
+  String address;
+  DateTime birthdate;
+  DateTime created;
+  String definitionId;
+  String emailAddress;
+  String firstName;
+  String fullName;
+  String gender;
+  String lastName;
+  String middleName;
+  String mobileNumber;
+  String requestId;
+  String status;
+  DateTime updated;
+  String username;
+  String vcIssuerId;
+  String verifier;
+  String channelIssuerId;
+
   Credential({
     required this.address,
     required this.birthdate,
@@ -31,25 +50,6 @@ class Credential {
     required this.verifier,
     required this.channelIssuerId,
   });
-
-  String address;
-  DateTime birthdate;
-  DateTime created;
-  String definitionId;
-  String emailAddress;
-  String firstName;
-  String fullName;
-  String gender;
-  String lastName;
-  String? middleName;
-  String mobileNumber;
-  String requestId;
-  String status;
-  DateTime updated;
-  String username;
-  String vcIssuerId;
-  String verifier;
-  String channelIssuerId;
 
   factory Credential.fromJson(Map<String, dynamic> json) => Credential(
         address: json["address"],

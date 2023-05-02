@@ -49,7 +49,6 @@ class ExportDataController extends GetxController {
 
   void exportDetailsAsPDF() async {
     await fetchCredentials();
-    print(credentials[0].requestId);
     await fetchCredentialDetail(credentials[0].requestId);
     var cd = credentialDetail.value!;
     ExportData.asPDF(

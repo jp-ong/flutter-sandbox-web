@@ -79,6 +79,8 @@ class ExportData {
   }) async {
     final pdf = pw.Document();
 
+    pw.Widget documentTable = _PdfTable(headers: headers, rows: rows).content;
+
     pdf.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.letter,
@@ -93,44 +95,7 @@ class ExportData {
                   width: 0.75,
                 ),
               ),
-              child: pw.Table(
-                border: const pw.TableBorder(
-                  horizontalInside: pw.BorderSide(
-                    color: PdfColors.grey300,
-                    width: 0.5,
-                  ),
-                  verticalInside: pw.BorderSide(
-                    color: PdfColors.grey300,
-                    width: 0.5,
-                  ),
-                ),
-                children: [
-                  pw.TableRow(children: [
-                    ...headers.map((header) {
-                      return pw.Container(
-                        padding: const pw.EdgeInsets.all(3),
-                        child: pw.Text(
-                          header,
-                          style: _PdfTextStyle.tableHeader,
-                        ),
-                      );
-                    })
-                  ]),
-                  ...rows.map((row) {
-                    return pw.TableRow(children: [
-                      ...row.map((r) {
-                        return pw.Container(
-                          padding: const pw.EdgeInsets.all(3),
-                          child: pw.Text(
-                            _getStatus(r),
-                            style: _PdfTextStyle.tableData,
-                          ),
-                        );
-                      })
-                    ]);
-                  }),
-                ],
-              ),
+              child: documentTable,
             ),
           ];
         },
@@ -169,6 +134,78 @@ class ExportData {
     html.AnchorElement(href: html.Url.createObjectUrlFromBlob(blob))
       ..setAttribute('download', '$fileName.${fileExtension.name}')
       ..click();
+  }
+}
+
+class _PdfTable {
+  final List<String> headers;
+  final List<List<String>> rows;
+
+  _PdfTable({
+    required this.headers,
+    required this.rows,
+  });
+
+  pw.Table get content {
+    pw.TableRow tableHeaders = _PdfTableHeader(headers: headers).content;
+    List<pw.TableRow> tableBody = _PdfTableBody(rows: rows).content;
+    return pw.Table(
+      border: const pw.TableBorder(
+        horizontalInside: pw.BorderSide(
+          color: PdfColors.grey300,
+          width: 0.5,
+        ),
+        verticalInside: pw.BorderSide(
+          color: PdfColors.grey300,
+          width: 0.5,
+        ),
+      ),
+      children: [tableHeaders, ...tableBody],
+    );
+  }
+}
+
+class _PdfTableHeader {
+  final List<String> headers;
+
+  _PdfTableHeader({required this.headers});
+
+  pw.TableRow get content {
+    return pw.TableRow(children: [
+      ...headers.map((header) {
+        return pw.Container(
+          padding: const pw.EdgeInsets.all(3),
+          child: pw.Text(
+            header,
+            style: _PdfTextStyle.tableHeader,
+          ),
+        );
+      })
+    ]);
+  }
+}
+
+class _PdfTableBody {
+  final List<List<String>> rows;
+
+  _PdfTableBody({required this.rows});
+
+  List<pw.TableRow> get content {
+    return [
+      ...rows.map((row) {
+        return pw.TableRow(children: [
+          ...row.map((r) {
+            return pw.Container(
+              padding: const pw.EdgeInsets.all(3),
+              child: pw.Text(
+                _getStatus(r),
+                style: _PdfTextStyle.tableData,
+              ),
+            );
+          })
+        ]);
+      })
+    ];
   }
 }
 

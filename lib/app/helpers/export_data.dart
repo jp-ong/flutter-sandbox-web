@@ -20,107 +20,6 @@ enum ContentType {
   const ContentType(this.type);
 }
 
-String getStatus(String status) {
-  switch (status) {
-    case 'VERIFIED':
-      return 'Fully Verified';
-    case 'NEEDS_ACTION':
-      return 'Needs Action';
-    case 'REVOKED':
-      return 'Revoked';
-    case 'REJECTED':
-      return 'Rejected';
-    case 'EXPIRED':
-      return 'Expired';
-    default:
-      return status;
-  }
-}
-
-class PdfHeader {
-  final String header;
-  final String dateTime;
-  final String status;
-
-  PdfHeader({
-    required this.header,
-    required this.dateTime,
-    required this.status,
-  });
-
-  pw.Widget get content {
-    return pw.Column(
-      mainAxisAlignment: pw.MainAxisAlignment.start,
-      crossAxisAlignment: pw.CrossAxisAlignment.start,
-      children: [
-        pw.Text(header, style: PdfTextStyle.h1),
-        pw.SizedBox(height: PdfPageFormat.inch * .075),
-        pw.Row(
-          children: [
-            pw.Text(dateTime, style: labelSmall),
-            pw.SizedBox(width: PdfPageFormat.inch * .075),
-            pw.Text(status),
-          ],
-        )
-      ],
-    );
-  }
-}
-
-class PdfSection {
-  final String header;
-  final List<List<String>> rows;
-
-  PdfSection({
-    required this.header,
-    required this.rows,
-  });
-
-  pw.Widget get content {
-    return pw.Container(
-      decoration: pw.BoxDecoration(
-        border: pw.Border.all(color: PdfColors.grey200),
-        borderRadius: const pw.BorderRadius.all(pw.Radius.circular(4)),
-      ),
-      padding: const pw.EdgeInsets.symmetric(
-        vertical: PdfPageFormat.inch * .125,
-        horizontal: PdfPageFormat.inch * .125,
-      ),
-      child: pw.Column(
-        mainAxisAlignment: pw.MainAxisAlignment.start,
-        crossAxisAlignment: pw.CrossAxisAlignment.start,
-        children: [
-          pw.Text(header, style: PdfTextStyle.h2),
-          pw.Divider(
-            color: PdfColors.grey200,
-            height: PdfPageFormat.inch * .25,
-          ),
-          ...rows.map((row) {
-            return pw.Container(
-              padding: const pw.EdgeInsets.symmetric(
-                vertical: PdfPageFormat.inch * .05,
-              ),
-              child: pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.start,
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                children: [
-                  pw.SizedBox(
-                    width: PdfPageFormat.inch * 1.5,
-                    child: pw.Text(row[0], style: PdfTextStyle.labelMedium),
-                  ),
-                  pw.Expanded(
-                    child: pw.Text(row[1], style: PdfTextStyle.bodyMedium),
-                  ),
-                ],
-              ),
-            );
-          }),
-        ],
-      ),
-    );
-  }
-}
-
 class ExportData {
   static void asPDF({
     required String fullName,
@@ -131,18 +30,18 @@ class ExportData {
   }) async {
     final pdf = pw.Document();
 
-    pw.Widget documentHeader = PdfHeader(
+    pw.Widget documentHeader = _PdfHeader(
       header: fullName,
       dateTime: dateTime,
-      status: getStatus(status),
+      status: _getStatus(status),
     ).content;
 
-    pw.Widget personalInfoSection = PdfSection(
+    pw.Widget personalInfoSection = _PdfSection(
       header: 'Personal Information',
       rows: personalInfo,
     ).content;
 
-    pw.Widget documentsSection = PdfSection(
+    pw.Widget documentsSection = _PdfSection(
       header: 'Documents',
       rows: documents,
     ).content;
@@ -212,7 +111,7 @@ class ExportData {
                         padding: const pw.EdgeInsets.all(3),
                         child: pw.Text(
                           header,
-                          style: PdfTextStyle.tableHeader,
+                          style: _PdfTextStyle.tableHeader,
                         ),
                       );
                     })
@@ -223,8 +122,8 @@ class ExportData {
                         return pw.Container(
                           padding: const pw.EdgeInsets.all(3),
                           child: pw.Text(
-                            getStatus(r),
-                            style: PdfTextStyle.tableData,
+                            _getStatus(r),
+                            style: _PdfTextStyle.tableData,
                           ),
                         );
                       })
@@ -273,7 +172,91 @@ class ExportData {
   }
 }
 
-class PdfTextStyle {
+class _PdfHeader {
+  final String header;
+  final String dateTime;
+  final String status;
+
+  _PdfHeader({
+    required this.header,
+    required this.dateTime,
+    required this.status,
+  });
+
+  pw.Widget get content {
+    return pw.Column(
+      mainAxisAlignment: pw.MainAxisAlignment.start,
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        pw.Text(header, style: _PdfTextStyle.h1),
+        pw.SizedBox(height: PdfPageFormat.inch * .075),
+        pw.Row(
+          children: [
+            pw.Text(dateTime, style: labelSmall),
+            pw.SizedBox(width: PdfPageFormat.inch * .075),
+            pw.Text(status),
+          ],
+        )
+      ],
+    );
+  }
+}
+
+class _PdfSection {
+  final String header;
+  final List<List<String>> rows;
+
+  _PdfSection({
+    required this.header,
+    required this.rows,
+  });
+
+  pw.Widget get content {
+    return pw.Container(
+      decoration: pw.BoxDecoration(
+        border: pw.Border.all(color: PdfColors.grey200),
+        borderRadius: const pw.BorderRadius.all(pw.Radius.circular(4)),
+      ),
+      padding: const pw.EdgeInsets.symmetric(
+        vertical: PdfPageFormat.inch * .125,
+        horizontal: PdfPageFormat.inch * .125,
+      ),
+      child: pw.Column(
+        mainAxisAlignment: pw.MainAxisAlignment.start,
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: [
+          pw.Text(header, style: _PdfTextStyle.h2),
+          pw.Divider(
+            color: PdfColors.grey200,
+            height: PdfPageFormat.inch * .25,
+          ),
+          ...rows.map((row) {
+            return pw.Container(
+              padding: const pw.EdgeInsets.symmetric(
+                vertical: PdfPageFormat.inch * .05,
+              ),
+              child: pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.start,
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  pw.SizedBox(
+                    width: PdfPageFormat.inch * 1.5,
+                    child: pw.Text(row[0], style: _PdfTextStyle.labelMedium),
+                  ),
+                  pw.Expanded(
+                    child: pw.Text(row[1], style: _PdfTextStyle.bodyMedium),
+                  ),
+                ],
+              ),
+            );
+          }),
+        ],
+      ),
+    );
+  }
+}
+
+class _PdfTextStyle {
   static final h1 = pw.TextStyle(
     color: PdfColors.grey900,
     fontSize: 16,
@@ -321,4 +304,21 @@ class PdfTextStyle {
     fontSize: 8,
     fontWeight: pw.FontWeight.normal,
   );
+}
+
+String _getStatus(String status) {
+  switch (status) {
+    case 'VERIFIED':
+      return 'Fully Verified';
+    case 'NEEDS_ACTION':
+      return 'Needs Action';
+    case 'REVOKED':
+      return 'Revoked';
+    case 'REJECTED':
+      return 'Rejected';
+    case 'EXPIRED':
+      return 'Expired';
+    default:
+      return status;
+  }
 }

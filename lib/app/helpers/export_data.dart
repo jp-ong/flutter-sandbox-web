@@ -23,6 +23,7 @@ class ExportData {
     required String status,
     required List<List<String>> personalInfo,
     required List<List<String>> documents,
+    required List<List<dynamic>> images,
   }) async {
     final pdf = pw.Document();
 
@@ -35,11 +36,19 @@ class ExportData {
     pw.Widget personalInfoSection = _PdfSection(
       header: 'Personal Information',
       rows: personalInfo,
+      isImage: false,
     ).content;
 
     pw.Widget documentsSection = _PdfSection(
       header: 'Documents',
       rows: documents,
+      isImage: false,
+    ).content;
+
+    pw.Widget photosSection = _PdfSection(
+      header: 'Photos',
+      rows: images,
+      isImage: true,
     ).content;
 
     pw.Widget sectionGap = pw.SizedBox(height: PdfPageFormat.inch * .125);
@@ -56,6 +65,8 @@ class ExportData {
             personalInfoSection,
             sectionGap,
             documentsSection,
+            sectionGap,
+            photosSection,
           ];
         },
       ),
@@ -237,14 +248,19 @@ class _PdfHeader {
 
 class _PdfSection {
   final String header;
-  final List<List<String>> rows;
+  final List<List<dynamic>> rows;
+  final bool isImage;
 
-  _PdfSection({
-    required this.header,
-    required this.rows,
-  });
+  _PdfSection(
+      {required this.header, required this.rows, required this.isImage});
 
   pw.Widget get content {
+    List<pw.Widget> sectionRows = [
+      ...rows.map((row) {
+        return _PdfSectionRow(label: row[0], value: row[1], isImage: isImage)
+            .content;
+      })
+    ];
     return pw.Container(
       decoration: pw.BoxDecoration(
         border: pw.Border.all(color: PdfColors.grey200),
@@ -263,26 +279,39 @@ class _PdfSection {
             color: PdfColors.grey200,
             height: PdfPageFormat.inch * .25,
           ),
-          ...rows.map((row) {
-            return pw.Container(
-              padding: const pw.EdgeInsets.symmetric(
-                vertical: PdfPageFormat.inch * .05,
-              ),
-              child: pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.start,
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                children: [
-                  pw.SizedBox(
-                    width: PdfPageFormat.inch * 1.5,
-                    child: pw.Text(row[0], style: _PdfTextStyle.labelMedium),
-                  ),
-                  pw.Expanded(
-                    child: pw.Text(row[1], style: _PdfTextStyle.bodyMedium),
-                  ),
-                ],
-              ),
-            );
-          }),
+          ...sectionRows,
+        ],
+      ),
+    );
+  }
+}
+
+class _PdfSectionRow {
+  final String label;
+  final dynamic value;
+  final bool isImage;
+
+  _PdfSectionRow(
+      {required this.label, required this.value, required this.isImage});
+
+  pw.Widget get content {
+    return pw.Container(
+      padding: const pw.EdgeInsets.symmetric(
+        vertical: PdfPageFormat.inch * .05,
+      ),
+      child: pw.Row(
+        mainAxisAlignment: pw.MainAxisAlignment.start,
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: [
+          pw.SizedBox(
+            width: PdfPageFormat.inch * 1.5,
+            child: pw.Text(label, style: _PdfTextStyle.labelMedium),
+          ),
+          pw.Expanded(
+            child: !isImage
+                ? pw.Text(value, style: _PdfTextStyle.bodyMedium)
+                : pw.Image(value, width: PdfPageFormat.inch * 4),
+          ),
         ],
       ),
     );

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:pdf/widgets.dart';
+import 'package:printing/printing.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_sandbox_web/app/helpers/export_data.dart';
@@ -15,6 +17,8 @@ class ExportDataController extends GetxController {
 
   Rxn<CredentialDetail> credentialDetail = Rxn<CredentialDetail>();
   RxBool isFetchingCredentialDetail = false.obs;
+
+  RxBool isExporting = false.obs;
 
   Future<void> fetchCredentials() async {
     isFetchingCredentials.value = true;
@@ -48,30 +52,46 @@ class ExportDataController extends GetxController {
   }
 
   void exportDetailsAsPDF() async {
+    isExporting.value = true;
+    var baseUrlImg = dotenv.get('BASE_URL_IMG');
+
     await fetchCredentials();
     await fetchCredentialDetail(credentials[0].requestId);
+
     var cd = credentialDetail.value!;
+
+    List<ImageProvider> images = await Future.wait([
+      ...cd.credentialRequestDetails.supportingDocuments
+          .map((e) => networkImage('$baseUrlImg${e.filename}'))
+    ]);
     ExportData.asPDF(
-      fullName: cd.fullName,
-      dateTime: cd.created.toIso8601String().split('T')[0],
-      status: cd.status,
-      personalInfo: [
-        ['Full Name', cd.fullName],
-        ['Birthdate', cd.birthdate.toIso8601String().split('T')[0]],
-        ['Gender', cd.gender],
-        ['Address', cd.address],
-        ['Email Address', cd.emailAddress],
-        ['Mobile Number', cd.mobileNumber],
-      ],
-      documents: [
-        ...cd.credentialRequestDetails.form.map((e) {
-          return [e.fieldName, e.fieldValue];
-        })
-      ],
-    );
+        fullName: cd.fullName,
+        dateTime: cd.created.toIso8601String().split('T')[0],
+        status: cd.status,
+        personalInfo: [
+          ['Full Name', cd.fullName],
+          ['Birthdate', cd.birthdate.toIso8601String().split('T')[0]],
+          ['Gender', cd.gender],
+          ['Address', cd.address],
+          ['Email Address', cd.emailAddress],
+          ['Mobile Number', cd.mobileNumber],
+        ],
+        documents: [
+          ...cd.credentialRequestDetails.form.map((e) {
+            return [e.fieldName, e.fieldValue];
+          })
+        ],
+        images: [
+          ...cd.credentialRequestDetails.supportingDocuments
+              .asMap()
+              .entries
+              .map((e) => [e.value.documentName, images[e.key]])
+        ]);
+    isExporting.value = false;
   }
 
   void exportListAsPDF() async {
+    isExporting.value = true;
     await fetchCredentials();
     ExportData.tableAsPDF(headers: [
       'RefID',
@@ -92,9 +112,12 @@ class ExportDataController extends GetxController {
         ];
       })
     ]);
+
+    isExporting.value = false;
   }
 
   void exportListAsCSV() async {
+    isExporting.value = true;
     await fetchCredentials();
     ExportData.tableAsCSV(headers: [
       'RefID',
@@ -115,5 +138,7 @@ class ExportDataController extends GetxController {
         ];
       })
     ]);
+
+    isExporting.value = false;
   }
 }

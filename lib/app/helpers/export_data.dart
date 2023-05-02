@@ -1,8 +1,4 @@
 import 'dart:html' as html;
-import 'dart:math';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_sandbox_web/app/utils/export_pdf/export_pdf.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:csv/csv.dart';
@@ -229,7 +225,7 @@ class _PdfHeader {
         pw.SizedBox(height: PdfPageFormat.inch * .075),
         pw.Row(
           children: [
-            pw.Text(dateTime, style: labelSmall),
+            pw.Text(dateTime, style: _PdfTextStyle.labelSmall),
             pw.SizedBox(width: PdfPageFormat.inch * .075),
             pw.Text(status),
           ],

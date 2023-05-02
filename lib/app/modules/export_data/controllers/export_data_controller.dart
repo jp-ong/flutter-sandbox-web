@@ -33,11 +33,11 @@ class ExportDataController extends GetxController {
     }
   }
 
-  Future<void> fetchCredentialDetail() async {
+  Future<void> fetchCredentialDetail(String reqId) async {
     isFetchingCredentialDetail.value = true;
     try {
       var apiUrl = dotenv.get('BASE_URL_DETAILS');
-      var response = await dio.get(apiUrl);
+      var response = await dio.get('$apiUrl/$reqId/details');
       var data = jsonEncode(response.data['data']);
       credentialDetail.value = credentialDetailFromJson(data);
     } catch (e) {
@@ -48,7 +48,9 @@ class ExportDataController extends GetxController {
   }
 
   void exportDetailsAsPDF() async {
-    await fetchCredentialDetail();
+    await fetchCredentials();
+    print(credentials[0].requestId);
+    await fetchCredentialDetail(credentials[0].requestId);
     var cd = credentialDetail.value!;
     ExportData.asPDF(
       fullName: cd.fullName,

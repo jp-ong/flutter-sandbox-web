@@ -25,18 +25,22 @@ class ExportDataView extends GetView<ExportDataController> {
               ),
             ),
             const SizedBox(height: 8),
-            ElevatedButton(
-              child: const Text('Export as PDF'),
-              onPressed: () {
-                controller.exportListAsPDF();
-              },
+            Obx(
+              () => ElevatedButton(
+                onPressed: controller.isFetchingCredentials.isFalse
+                    ? () => controller.exportListAsPDF()
+                    : null,
+                child: const Text('Export as PDF'),
+              ),
             ),
             const SizedBox(height: 8),
-            ElevatedButton(
-              child: const Text('Export as CSV'),
-              onPressed: () {
-                controller.exportListAsCSV();
-              },
+            Obx(
+              () => ElevatedButton(
+                onPressed: controller.isFetchingCredentials.isFalse
+                    ? () => controller.exportListAsCSV()
+                    : null,
+                child: const Text('Export as CSV'),
+              ),
             ),
             const SizedBox(height: 16),
             const Text(
@@ -47,11 +51,13 @@ class ExportDataView extends GetView<ExportDataController> {
               ),
             ),
             const SizedBox(height: 8),
-            ElevatedButton(
-              child: const Text('Export as PDF'),
-              onPressed: () {
-                controller.exportDetailsAsPDF();
-              },
+            Obx(
+              () => ElevatedButton(
+                onPressed: controller.isFetchingCredentialDetail.isFalse
+                    ? () => controller.exportDetailsAsPDF()
+                    : null,
+                child: const Text('Export as PDF'),
+              ),
             ),
           ],
         ),

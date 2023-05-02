@@ -134,7 +134,7 @@ class ExportData {
     pw.Widget documentHeader = PdfHeader(
       header: fullName,
       dateTime: dateTime,
-      status: status,
+      status: getStatus(status),
     ).content;
 
     pw.Widget personalInfoSection = PdfSection(
@@ -170,7 +170,7 @@ class ExportData {
       contentType: ContentType.pdf,
       data: await pdf.save(),
       fileExtension: FileExtension.pdf,
-      fileName: DateTime.now().toIso8601String(),
+      fileName: 'details_${DateTime.now().toIso8601String()}',
     );
   }
 

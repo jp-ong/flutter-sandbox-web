@@ -46,7 +46,25 @@ class ExportDataController extends GetxController {
 
   void exportDetailsAsPDF() async {
     await fetchCredentialDetail();
-    print(credentialDetail);
+    var cd = credentialDetail.value!;
+    ExportData.asPDF(
+      fullName: cd.fullName,
+      dateTime: cd.created.toIso8601String().split('T')[0],
+      status: cd.status,
+      personalInfo: [
+        ['Full Name', cd.fullName],
+        ['Birthdate', cd.birthdate.toIso8601String().split('T')[0]],
+        ['Gender', cd.gender],
+        ['Address', cd.address],
+        ['Email Address', cd.emailAddress],
+        ['Mobile Number', cd.mobileNumber],
+      ],
+      documents: [
+        ...cd.credentialRequestDetails.form.map((e) {
+          return [e.fieldName, e.fieldValue];
+        })
+      ],
+    );
   }
 
   void exportListAsPDF() async {

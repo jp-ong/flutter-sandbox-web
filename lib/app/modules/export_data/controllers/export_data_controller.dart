@@ -18,7 +18,8 @@ class ExportDataController extends GetxController {
   Rxn<CredentialDetail> credentialDetail = Rxn<CredentialDetail>();
   RxBool isFetchingCredentialDetail = false.obs;
 
-  RxBool isExporting = false.obs;
+  RxBool isExportingDetails = false.obs;
+  RxBool isExportingList = false.obs;
 
   Future<void> fetchCredentials() async {
     isFetchingCredentials.value = true;
@@ -52,7 +53,7 @@ class ExportDataController extends GetxController {
   }
 
   void exportDetailsAsPDF() async {
-    isExporting.value = true;
+    isExportingDetails.value = true;
     var baseUrlImg = dotenv.get('BASE_URL_IMG');
 
     await fetchCredentials();
@@ -87,11 +88,11 @@ class ExportDataController extends GetxController {
               .entries
               .map((e) => [e.value.documentName, images[e.key]])
         ]);
-    isExporting.value = false;
+    isExportingDetails.value = false;
   }
 
   void exportListAsPDF() async {
-    isExporting.value = true;
+    isExportingList.value = true;
     await fetchCredentials();
     ExportData.tableAsPDF(headers: [
       'RefID',
@@ -113,11 +114,11 @@ class ExportDataController extends GetxController {
       })
     ]);
 
-    isExporting.value = false;
+    isExportingList.value = false;
   }
 
   void exportListAsCSV() async {
-    isExporting.value = true;
+    isExportingList.value = true;
     await fetchCredentials();
     ExportData.tableAsCSV(headers: [
       'RefID',
@@ -139,6 +140,6 @@ class ExportDataController extends GetxController {
       })
     ]);
 
-    isExporting.value = false;
+    isExportingList.value = false;
   }
 }

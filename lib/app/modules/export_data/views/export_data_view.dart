@@ -27,7 +27,7 @@ class ExportDataView extends GetView<ExportDataController> {
             const SizedBox(height: 8),
             Obx(
               () => ElevatedButton(
-                onPressed: controller.isExporting.isFalse
+                onPressed: controller.isExportingList.isFalse
                     ? () => controller.exportListAsPDF()
                     : null,
                 child: const Text('Export as PDF'),
@@ -36,7 +36,7 @@ class ExportDataView extends GetView<ExportDataController> {
             const SizedBox(height: 8),
             Obx(
               () => ElevatedButton(
-                onPressed: controller.isExporting.isFalse
+                onPressed: controller.isExportingList.isFalse
                     ? () => controller.exportListAsCSV()
                     : null,
                 child: const Text('Export as CSV'),
@@ -53,7 +53,7 @@ class ExportDataView extends GetView<ExportDataController> {
             const SizedBox(height: 8),
             Obx(
               () => ElevatedButton(
-                onPressed: controller.isExporting.isFalse
+                onPressed: controller.isExportingDetails.isFalse
                     ? () => controller.exportDetailsAsPDF()
                     : null,
                 // onPressed: () => print('Test'),

@@ -106,6 +106,25 @@ class ExportDataV2 {
       ],
     );
 
+    String getFormattedValue(
+      String Function(String)? formatter,
+      String value,
+    ) {
+      String formattedValue = value;
+      try {
+        if (formatter != null && value.isNotEmpty) {
+          formattedValue = formatter(value);
+        }
+      } catch (e) {
+        formattedValue = value;
+      }
+      return formattedValue;
+    }
+
+    dynamic getMapValue(String key, Map map) {
+      return map.containsKey(key) ? map[key] : '';
+    }
+
     Iterable<pw.TableRow> tableBody = rows.map(
       (row) => pw.TableRow(
         children: [
@@ -115,9 +134,13 @@ class ExportDataV2 {
               padding: const pw.EdgeInsets.all(3),
               width: col.fullWidth == true ? double.infinity : null,
               child: pw.Text(
-                col.formatter != null
-                    ? col.formatter!(row[col.field])
-                    : row[col.field],
+                getFormattedValue(
+                  col.formatter,
+                  getMapValue(
+                    col.field,
+                    row,
+                  ),
+                ),
                 style: _PdfTextStyle.tableDataSmall,
               ),
             ),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_sandbox_web/app/helpers/export_data_v2.dart';
 import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
 import 'package:dio/dio.dart';
@@ -117,6 +118,44 @@ class ExportDataController extends GetxController {
     isExportingList.value = false;
   }
 
+  void exportListAsPDF2() async {
+    isExportingList.value = true;
+    await fetchCredentials();
+
+    await ExportDataV2.tableAsPDF(
+      columns: [
+        PdfTableColumn(
+          field: 'requestId',
+          header: 'RefId',
+          formatter: (value) => value.substring(0, 7),
+        ),
+        PdfTableColumn(
+          field: 'fullName',
+        ),
+        PdfTableColumn(
+          field: 'birthdate',
+          header: 'Birthdate',
+          formatter: (value) => value.split('T')[0],
+        ),
+        PdfTableColumn(
+          field: 'created',
+          header: 'Date',
+          formatter: (value) => value.split('T')[0],
+        ),
+        PdfTableColumn(field: 'channel_issuer_id', header: 'Channel'),
+        PdfTableColumn(
+          field: 'status',
+          header: 'Status',
+          formatter: (value) => _getStatus(value),
+          align: PdfTableColumnAlign.right,
+        ),
+      ],
+      rows: [...credentials.map((credential) => credential.toJson())],
+    );
+
+    isExportingList.value = false;
+  }
+
   void exportListAsCSV() async {
     isExportingList.value = true;
     await fetchCredentials();
@@ -141,5 +180,22 @@ class ExportDataController extends GetxController {
     ]);
 
     isExportingList.value = false;
+  }
+
+  String _getStatus(status) {
+    switch (status) {
+      case 'VERIFIED':
+        return 'Fully Verified';
+      case 'NEEDS_ACTION':
+        return 'Needs Action';
+      case 'REVOKED':
+        return 'Revoked';
+      case 'REJECTED':
+        return 'Rejected';
+      case 'EXPIRED':
+        return 'Expired';
+      default:
+        return status;
+    }
   }
 }

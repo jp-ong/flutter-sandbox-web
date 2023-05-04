@@ -28,7 +28,7 @@ class ExportDataView extends GetView<ExportDataController> {
             Obx(
               () => ElevatedButton(
                 onPressed: controller.isExportingList.isFalse
-                    ? controller.exportListAsPDF
+                    ? controller.exportListAsPDF2
                     : null,
                 child: const Text('Export as PDF'),
               ),

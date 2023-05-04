@@ -4,6 +4,30 @@
 
 import 'dart:convert';
 
+enum CredentialKeys {
+  address("address"),
+  birthdate("birthdate"),
+  created("created"),
+  definitionId("definition_id"),
+  emailAddress("email_address"),
+  firstName("firstName"),
+  fullName("fullName"),
+  gender("gender"),
+  lastName("lastName"),
+  middleName("middleName"),
+  mobileNumber("mobile_number"),
+  requestId("requestId"),
+  status("status"),
+  updated("updated"),
+  username("username"),
+  vcIssuerId("vc_issuer_id"),
+  verifier("verifier"),
+  channelIssuerId("channel_issuer_id");
+
+  final String value;
+  const CredentialKeys(this.value);
+}
+
 List<Credential> credentialFromJson(String str) =>
     List<Credential>.from(json.decode(str).map((x) => Credential.fromJson(x)));
 
@@ -52,44 +76,44 @@ class Credential {
   });
 
   factory Credential.fromJson(Map<String, dynamic> json) => Credential(
-        address: json["address"],
-        birthdate: DateTime.parse(json["birthdate"]),
-        created: DateTime.parse(json["created"]),
-        definitionId: json["definition_id"],
-        emailAddress: json["email_address"],
-        firstName: json["firstName"],
-        fullName: json["fullName"],
-        gender: json["gender"],
-        lastName: json["lastName"],
-        middleName: json["middleName"],
-        mobileNumber: json["mobile_number"],
-        requestId: json["requestId"],
-        status: json["status"],
-        updated: DateTime.parse(json["updated"]),
-        username: json["username"],
-        vcIssuerId: json["vc_issuer_id"],
-        verifier: json["verifier"],
-        channelIssuerId: json["channel_issuer_id"],
+        address: json[CredentialKeys.address.value],
+        birthdate: DateTime.parse(json[CredentialKeys.birthdate.value]),
+        created: DateTime.parse(json[CredentialKeys.created.value]),
+        definitionId: json[CredentialKeys.definitionId.value],
+        emailAddress: json[CredentialKeys.emailAddress.value],
+        firstName: json[CredentialKeys.firstName.value],
+        fullName: json[CredentialKeys.fullName.value],
+        gender: json[CredentialKeys.gender.value],
+        lastName: json[CredentialKeys.lastName.value],
+        middleName: json[CredentialKeys.middleName.value],
+        mobileNumber: json[CredentialKeys.mobileNumber.value],
+        requestId: json[CredentialKeys.requestId.value],
+        status: json[CredentialKeys.status.value],
+        updated: DateTime.parse(json[CredentialKeys.updated.value]),
+        username: json[CredentialKeys.username.value],
+        vcIssuerId: json[CredentialKeys.vcIssuerId.value],
+        verifier: json[CredentialKeys.verifier.value],
+        channelIssuerId: json[CredentialKeys.channelIssuerId.value],
       );
 
   Map<String, dynamic> toJson() => {
-        "address": address,
-        "birthdate": birthdate.toIso8601String(),
-        "created": created.toIso8601String(),
-        "definition_id": definitionId,
-        "email_address": emailAddress,
-        "firstName": firstName,
-        "fullName": fullName,
-        "gender": gender,
-        "lastName": lastName,
-        "middleName": middleName,
-        "mobile_number": mobileNumber,
-        "requestId": requestId,
-        "status": status,
-        "updated": updated.toIso8601String(),
-        "username": username,
-        "vc_issuer_id": vcIssuerId,
-        "verifier": verifier,
-        "channel_issuer_id": channelIssuerId,
+        CredentialKeys.address.value: address,
+        CredentialKeys.birthdate.value: birthdate.toIso8601String(),
+        CredentialKeys.created.value: created.toIso8601String(),
+        CredentialKeys.definitionId.value: definitionId,
+        CredentialKeys.emailAddress.value: emailAddress,
+        CredentialKeys.firstName.value: firstName,
+        CredentialKeys.fullName.value: fullName,
+        CredentialKeys.gender.value: gender,
+        CredentialKeys.lastName.value: lastName,
+        CredentialKeys.middleName.value: middleName,
+        CredentialKeys.mobileNumber.value: mobileNumber,
+        CredentialKeys.requestId.value: requestId,
+        CredentialKeys.status.value: status,
+        CredentialKeys.updated.value: updated.toIso8601String(),
+        CredentialKeys.username.value: username,
+        CredentialKeys.vcIssuerId.value: vcIssuerId,
+        CredentialKeys.verifier.value: verifier,
+        CredentialKeys.channelIssuerId.value: channelIssuerId,
       };
 }

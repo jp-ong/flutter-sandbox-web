@@ -125,26 +125,32 @@ class ExportDataController extends GetxController {
     await ExportDataV2.tableAsPDF(
       columns: [
         PdfTableColumn(
-          field: 'requestId',
+          field: CredentialKeys.requestId.value,
           header: 'RefId',
           formatter: (value) => value.substring(0, 7),
         ),
         PdfTableColumn(
-          field: 'fullName',
+          field: CredentialKeys.fullName.value,
+          header: 'Name',
         ),
         PdfTableColumn(
-          field: 'birthdate',
+          field: CredentialKeys.birthdate.value,
           header: 'Birthdate',
           formatter: (value) => value.split('T')[0],
+          align: PdfTableColumnAlign.center,
         ),
         PdfTableColumn(
-          field: 'created',
+          field: CredentialKeys.created.value,
           header: 'Date',
           formatter: (value) => value.split('T')[0],
+          align: PdfTableColumnAlign.center,
         ),
-        PdfTableColumn(field: 'channel_issuer_id', header: 'Channel'),
         PdfTableColumn(
-          field: 'status',
+          field: CredentialKeys.channelIssuerId.value,
+          header: 'Channel',
+        ),
+        PdfTableColumn(
+          field: CredentialKeys.status.value,
           header: 'Status',
           formatter: (value) => _getStatus(value),
           align: PdfTableColumnAlign.right,

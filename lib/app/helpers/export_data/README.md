@@ -128,7 +128,7 @@ The `tableAsCSV` method builds and downloads a CSV file containing tabularized d
 - `personalInfo` - A list of lists representing personal information of the person. Each inner list should have two elements: the label of the personal information and the value.
 - `documents` - A list of lists representing document details related to the person. Each inner list should have two elements: the label of the document and the value.
 - `images` - A list of lists representing images related to the document. Each inner list should have two elements: the title of the image and the file name of the image.
-- `fileName` - The name of the file to save the PDF document as. If not provided, the file will be named "details\_[current datetime].pdf".
+- `fileName` (optional) - The name of the file to save the PDF document as. If not provided, the file will be named "details\_[current datetime].pdf".
 
 ```dart
 ExportData.detailsAsPDF(
@@ -153,6 +153,7 @@ ExportData.detailsAsPDF(
     ['Front ID Photo', <ImageProvider>],
     ['Back ID Photo', <ImageProvider>],
     ['Selfie Photo', <ImageProvider>],
+    // ...
   ],
 );
 ```

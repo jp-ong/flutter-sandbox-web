@@ -108,11 +108,9 @@ await ExportData.tableAsCSV(
     CsvTableColumn(
       field: 'fullName',
       header: 'Full Name',
-      fullWidth: true,
     ),
     CsvTableColumn(
       field: 'age',
-      header: 'Age',
     ),
     CsvTableColumn(
       field: 'birthdate',

@@ -48,8 +48,6 @@ The `PdfTableColumn` object has the following properties:
 
 The `rows` parameter is a list of dynamic objects that represent the rows in the table. The method will try to find the values for each column in the `row` object using the `field` property of the `PdfTableColumn`.
 
-#### Example
-
 ```dart
 await ExportData.tableAsPDF(
   columns:[
@@ -94,8 +92,6 @@ The `CsvTableColumn` object has the following properties:
 - `formatter` (optional) - A function that takes a string value and returns a formatted string. The formatted string will be used as the cell value in the table. If not provided, the original value will be used instead.
 
 The `rows` parameter is a list of dynamic objects that represent the rows in the table. The method will try to find the values for each column in the `row` object using the `field` property of the `CsvTableColumn`.
-
-#### Example
 
 ```dart
 await ExportData.tableAsCSV(

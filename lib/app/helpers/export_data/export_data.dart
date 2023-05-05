@@ -1,7 +1,5 @@
 import 'dart:html' as html;
 
-import 'package:flutter_sandbox_web/app/helpers/export_data/src/classes/csv_table_column.dart';
-import 'package:flutter_sandbox_web/app/helpers/export_data/src/classes/pdf_details.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:csv/csv.dart';
@@ -10,10 +8,12 @@ import 'src/enums/enums.dart';
 import 'src/utils/utils.dart';
 import 'src/classes/pdf_table.dart';
 import 'src/classes/pdf_table_column.dart';
-import 'src/classes/pdf_textstyle.dart';
+import 'src/classes/csv_table_column.dart';
+import 'src/classes/pdf_details.dart';
 
 export 'src/enums/enums.dart';
 export 'src/classes/pdf_table_column.dart';
+export 'src/classes/csv_table_column.dart';
 
 class ExportData {
   /// Builds and downloads a PDF file containing tabularized data.
@@ -219,9 +219,15 @@ class ExportData {
     List<List<String>> body = [
       ...rows.map(
         (row) => [
-          ...columns.map(
-            (col) => getMapValue(col.field, row),
-          ),
+          ...columns.map((col) {
+            return getFormattedValue(
+              col.formatter,
+              getMapValue(
+                col.field,
+                row,
+              ),
+            );
+          }),
         ],
       ),
     ];

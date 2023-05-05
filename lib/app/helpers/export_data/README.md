@@ -152,7 +152,7 @@ ExportData.detailsAsPDF(
   images: [
     ['Front ID Photo', <ImageProvider>],
     ['Back ID Photo', <ImageProvider>],
-    ['Selfi Photo', <ImageProvider>],
+    ['Selfie Photo', <ImageProvider>],
   ],
 );
 ```

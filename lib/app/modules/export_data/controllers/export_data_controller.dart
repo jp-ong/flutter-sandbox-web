@@ -29,9 +29,9 @@ class ExportDataController extends GetxController {
       var response = await dio.get(apiUrl);
       var data = jsonEncode(response.data['data']['result']);
       credentials.value = credentialFromJson(data);
-      for (int i = 0; i < 100; i++) {
-        credentials.add(credentials[i % credentials.length]);
-      }
+      // for (int i = 0; i < 100; i++) {
+      //   credentials.add(credentials[i % credentials.length]);
+      // }
     } catch (e) {
       credentials.clear();
     } finally {

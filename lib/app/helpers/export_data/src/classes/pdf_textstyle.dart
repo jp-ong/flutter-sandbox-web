@@ -4,29 +4,51 @@ import 'package:pdf/widgets.dart' as pw;
 /// PDF text styles that can be used when generating
 /// PDF files using the pdf library.
 class PdfTextStyle {
-  /// Small table headers
-  ///
-  /// The [color] property sets the color of the text to `PdfColors.grey700`.
-  ///
-  /// The [fontSize] property sets the font size to `8`.
-  ///
-  /// The [fontWeight] property sets the font weight to `pw.FontWeight.bold`.
   static final tableHeaderSmall = pw.TextStyle(
     color: PdfColors.grey700,
     fontSize: 8,
     fontWeight: pw.FontWeight.bold,
   );
 
-  /// For small table data
-  ///
-  /// The [color] property sets the color of the text to `PdfColors.grey900`.
-  ///
-  /// The [fontSize] property sets the font size to `8`.
-  ///
-  /// The [fontWeight] property sets the font weight to `pw.FontWeight.normal`.
   static final tableDataSmall = pw.TextStyle(
     color: PdfColors.grey900,
     fontSize: 8,
+    fontWeight: pw.FontWeight.normal,
+  );
+
+  static final h1 = pw.TextStyle(
+    color: PdfColors.grey900,
+    fontSize: 16,
+    fontWeight: pw.FontWeight.bold,
+  );
+
+  static final h2 = pw.TextStyle(
+    color: PdfColors.grey900,
+    fontSize: 14,
+    fontWeight: pw.FontWeight.bold,
+  );
+
+  static final labelMedium = pw.TextStyle(
+    color: PdfColors.grey500,
+    fontSize: 12,
+    fontWeight: pw.FontWeight.normal,
+  );
+
+  static final labelSmall = pw.TextStyle(
+    color: PdfColors.grey500,
+    fontSize: 10,
+    fontWeight: pw.FontWeight.bold,
+  );
+
+  static final bodyMedium = pw.TextStyle(
+    color: PdfColors.grey800,
+    fontSize: 12,
+    fontWeight: pw.FontWeight.normal,
+  );
+
+  static final bodySmall = pw.TextStyle(
+    color: PdfColors.grey800,
+    fontSize: 10,
     fontWeight: pw.FontWeight.normal,
   );
 }

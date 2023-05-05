@@ -1,6 +1,7 @@
 import 'dart:html' as html;
 
 import 'package:flutter_sandbox_web/app/helpers/export_data/src/classes/csv_table_column.dart';
+import 'package:flutter_sandbox_web/app/helpers/export_data/src/classes/pdf_details.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:csv/csv.dart';
@@ -9,6 +10,7 @@ import 'src/enums/enums.dart';
 import 'src/utils/utils.dart';
 import 'src/classes/pdf_table.dart';
 import 'src/classes/pdf_table_column.dart';
+import 'src/classes/pdf_textstyle.dart';
 
 export 'src/enums/enums.dart';
 export 'src/classes/pdf_table_column.dart';
@@ -99,6 +101,64 @@ class ExportData {
       data: await pdf.save(),
       fileExtension: FileExtension.pdf,
       fileName: fileName ?? 'table_${DateTime.now().toIso8601String()}',
+    );
+  }
+
+  /// Generates a PDF document containing details of a person, including their full name,
+  /// date and time, status, personal information, documents, and images.
+  ///
+  /// [fullName]: The full name of the person.
+  ///
+  /// [dateTime]: The date and time of the credential request.
+  ///
+  /// [status]: The status of the credential request.
+  ///
+  /// [personalInfo]: A list of lists representing personal information of the person. Each
+  /// inner list should have two elements: the label of the personal information and the value.
+  ///
+  /// [documents]: A list of lists representing document details related to the person. Each inner
+  /// list should have two elements: the label of the document and the value.
+  ///
+  /// [images]: A list of lists representing images related to the document. Each inner list
+  /// should have two elements: the title of the image and the file name of the image.
+  ///
+  /// [fileName]: The name of the file to save the PDF document as. If not provided, the file
+  /// will be named "details_[current datetime].pdf".
+  static Future<void> detailsAsPDF({
+    required String fullName,
+    required String dateTime,
+    required String status,
+    required List<List<String>> personalInfo,
+    required List<List<String>> documents,
+    required List<List<dynamic>> images,
+    String? fileName,
+  }) async {
+    final pdf = pw.Document();
+
+    pdf.addPage(
+      pw.MultiPage(
+        pageFormat: PdfPageFormat.letter,
+        mainAxisAlignment: pw.MainAxisAlignment.start,
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        build: (context) {
+          PdfDetails pdfDetails = PdfDetails(
+            fullName: fullName,
+            dateTime: dateTime,
+            status: status,
+            personalInfo: personalInfo,
+            documents: documents,
+            images: images,
+          );
+          return pdfDetails.content;
+        },
+      ),
+    );
+
+    saveFile(
+      contentType: ContentType.pdf,
+      data: await pdf.save(),
+      fileExtension: FileExtension.pdf,
+      fileName: fileName ?? 'details_${DateTime.now().toIso8601String()}',
     );
   }
 

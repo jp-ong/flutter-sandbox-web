@@ -1,10 +1,10 @@
-# `ExportDataV2` Class Documentation
+# `ExportData` Class Documentation
 
-`ExportDataV2` is a class that provides a method to export tabular data to either PDF or CSV formats. It uses the Dart programming language and the Flutter framework's `pdf` and `html` packages.
+`ExportData` is a class that provides a method to export tabular data to either PDF or CSV formats. It uses the Dart programming language and the Flutter framework's `pdf` and `html` packages.
 
 ## Enumerations
 
-The `ExportDataV2` class has three enumerations:
+The `ExportData` class has three enumerations:
 
 ### `FileExtension`
 
@@ -51,7 +51,7 @@ The `rows` parameter is a list of dynamic objects that represent the rows in the
 #### Example
 
 ```dart
-await ExportDataV2.tableAsPDF(
+await ExportData.tableAsPDF(
   columns:[
     PdfTableColumn(
       field: 'userId',
@@ -72,6 +72,51 @@ await ExportDataV2.tableAsPDF(
       field: 'birthdate',
       header: 'Birth Date',
       align: PdfTableColumnAlign.center,
+      formatter: (value) => value.split('T')[0],
+    ),
+  ],
+  row:[...users.map((user) => user.toJson())],
+);
+```
+
+### `tableAsCSV`
+
+The `tableAsCSV` method builds and downloads a CSV file containing tabularized data. The method takes three parameters:
+
+- `columns` - A list of `CsvTableColumn` objects that describe the columns in the table.
+- `rows` - A list of dynamic objects that represent the rows in the table.
+- `fileName` (optional) - A string that represents the name of the file to be downloaded. If not provided, a default name will be generated based on the current date and time.
+
+The `CsvTableColumn` object has the following properties:
+
+- `field` - A string that represents the field in the `row` object that will provide the data for this column.
+- `header` (optional) - A string that represents the text to be displayed in the column header. If not provided, the `field` value will be used instead.
+- `formatter` (optional) - A function that takes a string value and returns a formatted string. The formatted string will be used as the cell value in the table. If not provided, the original value will be used instead.
+
+The `rows` parameter is a list of dynamic objects that represent the rows in the table. The method will try to find the values for each column in the `row` object using the `field` property of the `CsvTableColumn`.
+
+#### Example
+
+```dart
+await ExportData.tableAsCSV(
+  columns:[
+    CsvTableColumn(
+      field: 'userId',
+      header: 'User ID',
+      formatter: (value) => '${value.substring(0,7)}***',
+    ),
+    CsvTableColumn(
+      field: 'fullName',
+      header: 'Full Name',
+      fullWidth: true,
+    ),
+    CsvTableColumn(
+      field: 'age',
+      header: 'Age',
+    ),
+    CsvTableColumn(
+      field: 'birthdate',
+      header: 'Birth Date',
       formatter: (value) => value.split('T')[0],
     ),
   ],

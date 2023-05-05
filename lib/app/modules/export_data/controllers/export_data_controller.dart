@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:flutter_sandbox_web/app/helpers/export_data_v2.dart';
+import 'package:flutter_sandbox_web/app/helpers/export_data/export_data.dart';
+import 'package:flutter_sandbox_web/app/helpers/export_data/src/classes/csv_table_column.dart';
 import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_sandbox_web/app/helpers/export_data.dart';
 import 'package:flutter_sandbox_web/app/modules/export_data/models/credential_detail_model.dart';
 import 'package:flutter_sandbox_web/app/modules/export_data/models/credential_model.dart';
 import 'package:get/get.dart';
@@ -54,75 +54,75 @@ class ExportDataController extends GetxController {
   }
 
   void exportDetailsAsPDF() async {
-    isExportingDetails.value = true;
-    var baseUrlImg = dotenv.get('BASE_URL_IMG');
+    //   isExportingDetails.value = true;
+    //   var baseUrlImg = dotenv.get('BASE_URL_IMG');
 
-    await fetchCredentials();
-    await fetchCredentialDetail(credentials[0].requestId);
+    //   await fetchCredentials();
+    //   await fetchCredentialDetail(credentials[0].requestId);
 
-    var cd = credentialDetail.value!;
+    //   var cd = credentialDetail.value!;
 
-    List<ImageProvider> images = await Future.wait([
-      ...cd.credentialRequestDetails.supportingDocuments
-          .map((e) => networkImage('$baseUrlImg${e.filename}'))
-    ]);
-    ExportData.asPDF(
-        fullName: cd.fullName,
-        dateTime: cd.created.toIso8601String().split('T')[0],
-        status: cd.status,
-        personalInfo: [
-          ['Full Name', cd.fullName],
-          ['Birthdate', cd.birthdate.toIso8601String().split('T')[0]],
-          ['Gender', cd.gender],
-          ['Address', cd.address],
-          ['Email Address', cd.emailAddress],
-          ['Mobile Number', cd.mobileNumber],
-        ],
-        documents: [
-          ...cd.credentialRequestDetails.form.map((e) {
-            return [e.fieldName, e.fieldValue];
-          })
-        ],
-        images: [
-          ...cd.credentialRequestDetails.supportingDocuments
-              .asMap()
-              .entries
-              .map((e) => [e.value.documentName, images[e.key]])
-        ]);
-    isExportingDetails.value = false;
+    //   List<ImageProvider> images = await Future.wait([
+    //     ...cd.credentialRequestDetails.supportingDocuments
+    //         .map((e) => networkImage('$baseUrlImg${e.filename}'))
+    //   ]);
+    //   ExportData.asPDF(
+    //       fullName: cd.fullName,
+    //       dateTime: cd.created.toIso8601String().split('T')[0],
+    //       status: cd.status,
+    //       personalInfo: [
+    //         ['Full Name', cd.fullName],
+    //         ['Birthdate', cd.birthdate.toIso8601String().split('T')[0]],
+    //         ['Gender', cd.gender],
+    //         ['Address', cd.address],
+    //         ['Email Address', cd.emailAddress],
+    //         ['Mobile Number', cd.mobileNumber],
+    //       ],
+    //       documents: [
+    //         ...cd.credentialRequestDetails.form.map((e) {
+    //           return [e.fieldName, e.fieldValue];
+    //         })
+    //       ],
+    //       images: [
+    //         ...cd.credentialRequestDetails.supportingDocuments
+    //             .asMap()
+    //             .entries
+    //             .map((e) => [e.value.documentName, images[e.key]])
+    //       ]);
+    //   isExportingDetails.value = false;
   }
+
+  // void exportListAsPDF() async {
+  //   isExportingList.value = true;
+  //   await fetchCredentials();
+  //   ExportData.tableAsPDF(headers: [
+  //     'RefID',
+  //     'Name',
+  //     'Birthdate',
+  //     'Date',
+  //     'Channel',
+  //     'Status'
+  //   ], rows: [
+  //     ...credentials.map((credential) {
+  //       return [
+  //         credential.requestId.substring(0, 7),
+  //         credential.fullName,
+  //         credential.birthdate.toIso8601String().split('T')[0],
+  //         credential.created.toIso8601String().split('T')[0],
+  //         credential.channelIssuerId,
+  //         credential.status
+  //       ];
+  //     })
+  //   ]);
+
+  //   isExportingList.value = false;
+  // }
 
   void exportListAsPDF() async {
     isExportingList.value = true;
     await fetchCredentials();
-    ExportData.tableAsPDF(headers: [
-      'RefID',
-      'Name',
-      'Birthdate',
-      'Date',
-      'Channel',
-      'Status'
-    ], rows: [
-      ...credentials.map((credential) {
-        return [
-          credential.requestId.substring(0, 7),
-          credential.fullName,
-          credential.birthdate.toIso8601String().split('T')[0],
-          credential.created.toIso8601String().split('T')[0],
-          credential.channelIssuerId,
-          credential.status
-        ];
-      })
-    ]);
 
-    isExportingList.value = false;
-  }
-
-  void exportListAsPDF2() async {
-    isExportingList.value = true;
-    await fetchCredentials();
-
-    await ExportDataV2.tableAsPDF(
+    await ExportData.tableAsPDF(
       columns: [
         PdfTableColumn(
           field: CredentialKeys.requestId.value,
@@ -162,28 +162,69 @@ class ExportDataController extends GetxController {
     isExportingList.value = false;
   }
 
+  // void exportListAsCSV() async {
+  //   isExportingList.value = true;
+  //   await fetchCredentials();
+  //   ExportData.tableAsCSV(headers: [
+  //     'RefID',
+  //     'Name',
+  //     'Birthdate',
+  //     'Date',
+  //     'Channel',
+  //     'Status'
+  //   ], rows: [
+  //     ...credentials.map((credential) {
+  //       return [
+  //         credential.requestId,
+  //         credential.fullName,
+  //         credential.birthdate.toIso8601String(),
+  //         credential.created.toIso8601String(),
+  //         credential.channelIssuerId,
+  //         credential.status
+  //       ];
+  //     })
+  //   ]);
+
+  //   isExportingList.value = false;
+  // }
+
   void exportListAsCSV() async {
     isExportingList.value = true;
     await fetchCredentials();
-    ExportData.tableAsCSV(headers: [
-      'RefID',
-      'Name',
-      'Birthdate',
-      'Date',
-      'Channel',
-      'Status'
-    ], rows: [
-      ...credentials.map((credential) {
-        return [
-          credential.requestId,
-          credential.fullName,
-          credential.birthdate.toIso8601String(),
-          credential.created.toIso8601String(),
-          credential.channelIssuerId,
-          credential.status
-        ];
-      })
-    ]);
+
+    await ExportData.tableAsCSV(
+      columns: [
+        CsvTableColumn(
+          field: CredentialKeys.requestId.value,
+          header: 'RefId',
+          formatter: (value) => value.substring(0, 7),
+        ),
+        CsvTableColumn(
+          field: CredentialKeys.fullName.value,
+          header: 'Name',
+        ),
+        CsvTableColumn(
+          field: CredentialKeys.birthdate.value,
+          header: 'Birthdate',
+          formatter: (value) => value.split('T')[0],
+        ),
+        CsvTableColumn(
+          field: CredentialKeys.created.value,
+          header: 'Date',
+          formatter: (value) => value.split('T')[0],
+        ),
+        CsvTableColumn(
+          field: CredentialKeys.channelIssuerId.value,
+          header: 'Channel',
+        ),
+        CsvTableColumn(
+          field: CredentialKeys.status.value,
+          header: 'Status',
+          formatter: (value) => _getStatus(value),
+        ),
+      ],
+      rows: [...credentials.map((credential) => credential.toJson())],
+    );
 
     isExportingList.value = false;
   }

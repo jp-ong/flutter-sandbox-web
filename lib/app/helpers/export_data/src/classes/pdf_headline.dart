@@ -26,7 +26,7 @@ class PdfHeadline {
           backgroundColor = PdfColor.fromHex('#E4F7EC');
           statusText = 'Fully Verified';
           break;
-        case 'PENDING':
+        case 'NEEDS_ACTION':
           textColor = PdfColor.fromHex('#E89937');
           backgroundColor = PdfColor.fromHex('#FCF7E1');
           statusText = 'Needs Action';
@@ -42,10 +42,11 @@ class PdfHeadline {
           statusText = 'Revoked';
           break;
         case 'EXPIRED':
-        default:
           textColor = PdfColor.fromHex('#50535E');
           backgroundColor = PdfColor.fromHex('#EEEEEE');
           statusText = 'Expired';
+          break;
+        default:
           break;
       }
 

@@ -120,40 +120,37 @@ await ExportData.tableAsCSV(
 
 ### `detailsAsPDF`
 
-The `tableAsCSV` method builds and downloads a CSV file containing tabularized data. The method takes three parameters:
+The `detailsAsPDF` Generates a PDF document with a headline and a body consisting of multiple sections. The method takes three parameters:
 
-- `fullName` - The full name of the person.
-- `dateTime` - The date and time of the credential request.
-- `status` - The status of the credential request.
-- `personalInfo` - A list of lists representing personal information of the person. Each inner list should have two elements: the label of the personal information and the value.
-- `documents` - A list of lists representing document details related to the person. Each inner list should have two elements: the label of the document and the value.
-- `images` - A list of lists representing images related to the document. Each inner list should have two elements: the title of the image and the file name of the image.
+- `headline` - The headline to be displayed at the top of the PDF document.
+- `body` - A list of `PdfSection` objects representing the content of the body.
 - `fileName` (optional) - The name of the file to save the PDF document as. If not provided, the file will be named "details\_[current datetime].pdf".
 
 ```dart
 ExportData.detailsAsPDF(
-  fullName: 'Juan dela Cruz',
-  dateTime: '2023-04-29',
-  status: 'Fully Verified',
-  personalInfo: [
-    ['Full Name', 'Juan dela Cruz'],
-    ['Birthdate', '1998-04-29'],
-    ['Gender', 'Male'],
-    ['Address', '123 Street, City'],
-    ['Email Address', 'address@example.com'],
-    ['Mobile Number', '639123456789'],
-    // ...
-  ],
-  documents: [
-    ['Valid ID', 'UMID'],
-    ['ID Number', '1234567890'],
-    // ...
-  ],
-  images: [
-    ['Front ID Photo', <ImageProvider>],
-    ['Back ID Photo', <ImageProvider>],
-    ['Selfie Photo', <ImageProvider>],
-    // ...
+  headline: PdfHeadline.akin(
+    title: 'John Paul Ong',
+    dateTime: 'April 29, 2023',
+    status: 'NEEDS_ACTION',
+  ),
+  body: [
+    PdfSection.rows(
+      heading: 'Personal Information',
+      rows: [
+        PdfSectionRow.text(label: 'Full Name', value: 'John Paul Ong'),
+        PdfSectionRow.text(label: 'Email Address', value: 'jpo@example.com'),
+        PdfSectionRow.text(label: 'Mobile Number', value: '+639123456789'),
+      ],
+    ),
+    PdfSection.rows(
+      heading: 'Documents',
+      rows: [
+        PdfSectionRow.text(label: 'Valid ID', value: 'UMID'),
+        PdfSectionRow.text(label: 'ID Number', value: 'ID123456789'),
+        PdfSectionRow.image(label: 'Front ID Photo', value: <ImageProvider>),
+        PdfSectionRow.image(label: 'Back ID Photo', value: <ImageProvider>),
+      ],
+    ),
   ],
 );
 ```

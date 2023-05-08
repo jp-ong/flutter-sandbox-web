@@ -1,9 +1,10 @@
-import 'pdf_table_column.dart';
-import 'pdf_textstyle.dart';
-import '../enums/enums.dart';
-import '../utils/utils.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+
+import '../enums/enums.dart';
+import '../utils/utils.dart';
+import 'pdf_table_column.dart';
+import 'pdf_textstyle.dart';
 
 /// Table to be included in a PDF file.
 class PdfTable {

@@ -1,6 +1,7 @@
-import 'package:flutter_sandbox_web/app/helpers/export_data/src/classes/pdf_textstyle.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+
+import 'pdf_textstyle.dart';
 
 /// Headline section of a PDF document.
 class PdfHeadline {

@@ -1,4 +1,4 @@
-/// Ffile extensions that can be used
+/// File extensions that can be used
 /// when saving files on the client-side using a web browser.
 ///
 /// The [pdf] value represents the PDF file extension.

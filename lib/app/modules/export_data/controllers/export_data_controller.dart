@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter_sandbox_web/app/helpers/export_data/export_data.dart';
-import 'package:flutter_sandbox_web/app/helpers/export_data/src/classes/csv_table_column.dart';
 import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
 import 'package:dio/dio.dart';
@@ -150,27 +149,43 @@ class ExportDataController extends GetxController {
       ...cd.credentialRequestDetails.supportingDocuments
           .map((e) => networkImage('$baseUrlImg${e.filename}'))
     ]);
+
     ExportData.detailsAsPDF(
-      fullName: cd.fullName,
-      dateTime: cd.created.toIso8601String().split('T')[0],
-      status: cd.status,
-      personalInfo: [
-        ['Full Name', cd.fullName],
-        ['Birthdate', cd.birthdate.toIso8601String().split('T')[0]],
-        ['Gender', cd.gender],
-        ['Address', cd.address],
-        ['Email Address', cd.emailAddress],
-        ['Mobile Number', cd.mobileNumber],
-      ],
-      documents: [
-        ...cd.credentialRequestDetails.form
-            .map((e) => [e.fieldName, e.fieldValue])
-      ],
-      images: [
-        ...cd.credentialRequestDetails.supportingDocuments
-            .asMap()
-            .entries
-            .map((e) => [e.value.documentName, images[e.key]])
+      headline: PdfHeadline.akin(
+        title: 'John Paul Ong',
+        dateTime: '2023-03-04',
+        status: 'PENDING',
+      ),
+      body: [
+        PdfSection.rows(
+          heading: 'Personal Information',
+          rows: [
+            PdfSectionRow.text(label: 'Full Name', value: cd.fullName),
+            PdfSectionRow.text(
+                label: 'Birth Date',
+                value: cd.birthdate.toIso8601String().split('T')[0]),
+            PdfSectionRow.text(label: 'Gender', value: cd.gender),
+            PdfSectionRow.text(label: 'Address', value: cd.address),
+            PdfSectionRow.text(label: 'Email Address', value: cd.emailAddress),
+            PdfSectionRow.text(label: 'Mobile Number', value: cd.mobileNumber),
+          ],
+        ),
+        PdfSection.rows(
+          heading: 'Documents',
+          rows: [
+            ...cd.credentialRequestDetails.form.map((e) {
+              return PdfSectionRow.text(
+                  label: e.fieldName, value: e.fieldValue);
+            }),
+            ...cd.credentialRequestDetails.supportingDocuments
+                .asMap()
+                .entries
+                .map((e) {
+              return PdfSectionRow.image(
+                  label: e.value.documentName, value: images[e.key]);
+            }),
+          ],
+        ),
       ],
     );
 

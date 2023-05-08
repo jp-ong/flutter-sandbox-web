@@ -9,11 +9,15 @@ import 'src/utils/utils.dart';
 import 'src/classes/pdf_table.dart';
 import 'src/classes/pdf_table_column.dart';
 import 'src/classes/csv_table_column.dart';
-import 'src/classes/pdf_details.dart';
+import 'src/classes/pdf_headline.dart';
+import 'src/classes/pdf_section.dart';
 
 export 'src/enums/enums.dart';
 export 'src/classes/pdf_table_column.dart';
 export 'src/classes/csv_table_column.dart';
+export 'src/classes/pdf_headline.dart';
+export 'src/classes/pdf_section.dart';
+export 'src/classes/pdf_section_row.dart';
 
 class ExportData {
   /// Builds and downloads a PDF file containing tabularized data.
@@ -104,33 +108,17 @@ class ExportData {
     );
   }
 
-  /// Generates a PDF document containing details of a person, including their full name,
-  /// date and time, status, personal information, documents, and images.
+  /// Generates a PDF document with a headline and a body consisting of multiple sections.
   ///
-  /// [fullName]: The full name of the person.
+  /// [headline]: The headline to be displayed at the top of the PDF document.
   ///
-  /// [dateTime]: The date and time of the credential request.
-  ///
-  /// [status]: The status of the credential request.
-  ///
-  /// [personalInfo]: A list of lists representing personal information of the person. Each
-  /// inner list should have two elements: the label of the personal information and the value.
-  ///
-  /// [documents]: A list of lists representing document details related to the person. Each inner
-  /// list should have two elements: the label of the document and the value.
-  ///
-  /// [images]: A list of lists representing images related to the document. Each inner list
-  /// should have two elements: the title of the image and the file name of the image.
+  /// [body]: A list of [PdfSection] objects representing the content of the body.
   ///
   /// [fileName]: The name of the file to save the PDF document as. If not provided, the file
   /// will be named "details_[current datetime].pdf".
   static Future<void> detailsAsPDF({
-    required String fullName,
-    required String dateTime,
-    required String status,
-    required List<List<String>> personalInfo,
-    required List<List<String>> documents,
-    required List<List<dynamic>> images,
+    required PdfHeadline headline,
+    required List<PdfSection> body,
     String? fileName,
   }) async {
     final pdf = pw.Document();
@@ -141,15 +129,10 @@ class ExportData {
         mainAxisAlignment: pw.MainAxisAlignment.start,
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         build: (context) {
-          PdfDetails pdfDetails = PdfDetails(
-            fullName: fullName,
-            dateTime: dateTime,
-            status: status,
-            personalInfo: personalInfo,
-            documents: documents,
-            images: images,
-          );
-          return pdfDetails.content;
+          return [
+            headline.content,
+            ...body.map((b) => b.content),
+          ];
         },
       ),
     );

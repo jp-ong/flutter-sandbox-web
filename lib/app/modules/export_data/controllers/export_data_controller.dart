@@ -152,9 +152,9 @@ class ExportDataController extends GetxController {
 
     ExportData.detailsAsPDF(
       headline: PdfHeadline.akin(
-        title: 'John Paul Ong',
-        dateTime: '2023-03-04',
-        status: 'PENDING',
+        title: cd.fullName,
+        dateTime: cd.created.toIso8601String().split('T')[0],
+        status: cd.status,
       ),
       body: [
         PdfSection.rows(

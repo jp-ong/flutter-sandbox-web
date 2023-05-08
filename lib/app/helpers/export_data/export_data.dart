@@ -1,5 +1,3 @@
-import 'dart:html' as html;
-
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:csv/csv.dart';

@@ -127,7 +127,7 @@ The `detailsAsPDF` Generates a PDF document with a headline and a body consistin
 - `fileName` (optional) - The name of the file to save the PDF document as. If not provided, the file will be named "details\_[current datetime].pdf".
 
 ```dart
-ExportData.detailsAsPDF(
+await ExportData.detailsAsPDF(
   headline: PdfHeadline.akin(
     title: 'John Paul Ong',
     dateTime: 'April 29, 2023',

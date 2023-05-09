@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_sandbox_web/app/helpers/export_data/export_data.dart';
+import 'package:flutter_sandbox_web/app/modules/export_data/models/credentials_table_model.dart';
 import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
 import 'package:dio/dio.dart';
@@ -52,45 +53,60 @@ class ExportDataController extends GetxController {
     }
   }
 
+  // void exportListAsPDF() async {
+  //   isExportingList.value = true;
+  //   await fetchCredentials();
+
+  //   await ExportData.tableAsPDF(
+  //     columns: [
+  //       PdfTableColumn(
+  //         field: CredentialKeys.requestId.value,
+  //         header: 'RefId',
+  //         formatter: (value) => value.substring(0, 7),
+  //       ),
+  //       PdfTableColumn(
+  //         field: CredentialKeys.fullName.value,
+  //         header: 'Name',
+  //       ),
+  //       PdfTableColumn(
+  //         field: CredentialKeys.birthdate.value,
+  //         header: 'Birthdate',
+  //         formatter: (value) => value.split('T')[0],
+  //         align: PdfTableColumnAlign.center,
+  //       ),
+  //       PdfTableColumn(
+  //         field: CredentialKeys.created.value,
+  //         header: 'Date',
+  //         formatter: (value) => value.split('T')[0],
+  //         align: PdfTableColumnAlign.center,
+  //       ),
+  //       PdfTableColumn(
+  //         field: CredentialKeys.channelIssuerId.value,
+  //         header: 'Channel',
+  //       ),
+  //       PdfTableColumn(
+  //         field: CredentialKeys.status.value,
+  //         header: 'Status',
+  //         formatter: (value) => _getStatus(value),
+  //         align: PdfTableColumnAlign.right,
+  //       ),
+  //     ],
+  //     rows: [...credentials.map((credential) => credential.toJson())],
+  //   );
+
+  //   isExportingList.value = false;
+  // }
+
   void exportListAsPDF() async {
     isExportingList.value = true;
     await fetchCredentials();
 
+    CredentialsTable credentialsTable = CredentialsTable.fromJson(
+        json: [...credentials.map((credential) => credential.toJson())]);
+
     await ExportData.tableAsPDF(
-      columns: [
-        PdfTableColumn(
-          field: CredentialKeys.requestId.value,
-          header: 'RefId',
-          formatter: (value) => value.substring(0, 7),
-        ),
-        PdfTableColumn(
-          field: CredentialKeys.fullName.value,
-          header: 'Name',
-        ),
-        PdfTableColumn(
-          field: CredentialKeys.birthdate.value,
-          header: 'Birthdate',
-          formatter: (value) => value.split('T')[0],
-          align: PdfTableColumnAlign.center,
-        ),
-        PdfTableColumn(
-          field: CredentialKeys.created.value,
-          header: 'Date',
-          formatter: (value) => value.split('T')[0],
-          align: PdfTableColumnAlign.center,
-        ),
-        PdfTableColumn(
-          field: CredentialKeys.channelIssuerId.value,
-          header: 'Channel',
-        ),
-        PdfTableColumn(
-          field: CredentialKeys.status.value,
-          header: 'Status',
-          formatter: (value) => _getStatus(value),
-          align: PdfTableColumnAlign.right,
-        ),
-      ],
-      rows: [...credentials.map((credential) => credential.toJson())],
+      columns: credentialsTable.columns,
+      rows: credentialsTable.rows,
     );
 
     isExportingList.value = false;
